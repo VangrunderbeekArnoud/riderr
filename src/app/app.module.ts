@@ -6,24 +6,35 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { BookRidePage } from "../pages/book-ride/book-ride";
+
+import { UberAPI } from "../services/uber.services";
+import { IonicStorageModule } from "@ionic/storage";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    BookRidePage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    BookRidePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    UberAPI,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
