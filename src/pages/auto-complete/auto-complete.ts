@@ -1,25 +1,85 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { ViewController } from 'ionic-angular';
 
-/**
- * Generated class for the AutoCompletePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-auto-complete',
   templateUrl: 'auto-complete.html',
 })
 export class AutoCompletePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  autocompleteItems;
+  autocomplete;
+  ctr: HTMLElement = document.getElementById("q");
+  service = new google.maps.places.AutoCompleteService();
+  geocoder = new google.maps.Geocoder();
+
+  constructor(public viewCtrl: ViewController, private zone: NgZone) {
+    this.autocompleteItems = [];
+    this.autocomplete = {
+      query: ''
+    };
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AutoCompletePage');
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  chooseItem(item: any) {
+    this.geocoder.geocode({
+      'placeId': item.place_id
+    }, (responses) => {
+      this.viewCtrl.dismiss({
+        description: item.description,
+        latitude: responses[0].geometry.location.lat(),
+        longitude: responses[0].geometry.location.lng()
+      });
+    });
+  }
+
+  updateSearch() {
+    if ( this.autocomplete.query == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    let that = this;
+    this.service.getPlacePredictions({
+      input: that.autocomplete.query,
+      componentRestrictions: { country: 'IN'}
+    }, (predictions, status) => {
+      that.autocompleteItems = [];
+      that.zone.run(function () {
+        predictions = predictions || [];
+        predictions.forEach(function(prediction) {
+          that.autocompleteItems.push(prediction);
+        });
+      });
+    });
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

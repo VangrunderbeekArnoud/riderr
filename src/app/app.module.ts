@@ -8,16 +8,25 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { BookRidePage } from "../pages/book-ride/book-ride";
+import { AutoCompletePage } from "../pages/auto-complete/auto-complete";
+import { ProfilePage } from "../pages/profile/profile";
+import { HistoryPage } from "../pages/history/history";
+import { PaymentMethodsPage } from "../pages/payment-methods/payment-methods";
 
 import { UberAPI } from "../services/uber.services";
 import { IonicStorageModule } from "@ionic/storage";
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    BookRidePage
+    BookRidePage,
+    AutoCompletePage,
+    ProfilePage,
+    HistoryPage,
+    PaymentMethodsPage
   ],
   imports: [
     BrowserModule,
@@ -29,12 +38,18 @@ import { IonicStorageModule } from "@ionic/storage";
     MyApp,
     HomePage,
     LoginPage,
-    BookRidePage
+    BookRidePage,
+    AutoCompletePage,
+    ProfilePage,
+    HistoryPage,
+    PaymentMethodsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     UberAPI,
+    Storage,
+    Diagnostic,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
