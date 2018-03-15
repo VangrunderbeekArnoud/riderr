@@ -10,7 +10,7 @@ export class AutoCompletePage {
   autocompleteItems;
   autocomplete;
   ctr: HTMLElement = document.getElementById("q");
-  service = new google.maps.places.AutoCompleteService();
+  service = new google.maps.places.AutocompleteService();
   geocoder = new google.maps.Geocoder();
 
   constructor(public viewCtrl: ViewController, private zone: NgZone) {

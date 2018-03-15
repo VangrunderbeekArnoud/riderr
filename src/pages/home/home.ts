@@ -3,7 +3,7 @@ import { NavController, Events } from 'ionic-angular';
 import { BookRidePage } from '../book-ride/book-ride';
 import { ProfilePage } from '../profile/profile';
 import { HistoryPage } from '../history/history';
-import { PaymentsMethodsPage } from '../payment-methods/payment-methods';
+import { PaymentMethodsPage } from '../payment-methods/payment-methods';
 import { LoginPage } from '../login/login';
 import { UberAPI } from "../../services/uber.services";
 import { ViewChild } from "@angular/core";
@@ -29,7 +29,7 @@ export class HomePage {
     this.bookRidePage = BookRidePage;
     this.profilePage = ProfilePage;
     this.historyPage = HistoryPage;
-    this.paymentMethodsPage = PaymentsMethodsPage;
+    this.paymentMethodsPage = PaymentMethodsPage;
   }
 
   ionOpened() {

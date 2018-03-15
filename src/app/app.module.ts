@@ -17,6 +17,9 @@ import { UberAPI } from "../services/uber.services";
 import { IonicStorageModule } from "@ionic/storage";
 import { Diagnostic } from '@ionic-native/diagnostic';
 
+import { HttpModule } from "@angular/http";
+import { InAppBrowser } from "@ionic-native/in-app-browser";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -31,7 +34,8 @@ import { Diagnostic } from '@ionic-native/diagnostic';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,6 +54,7 @@ import { Diagnostic } from '@ionic-native/diagnostic';
     UberAPI,
     Storage,
     Diagnostic,
+    InAppBrowser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

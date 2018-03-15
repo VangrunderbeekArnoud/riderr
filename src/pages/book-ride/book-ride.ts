@@ -41,7 +41,7 @@ export class BookRidePage {
               private modalCtrl: ModalController,
               private diagnostic: Diagnostic,
               private geoLocation: Geolocation,
-              private googleMaps: GoogleMap,
+              private googleMaps: GoogleMaps,
               public events: Events) {
   }
 
@@ -82,7 +82,7 @@ export class BookRidePage {
     }
     this.diagnostic.requestRuntimePermissions([
       that.diagnostic.permission.ACCESS_FINE_LOCATION,
-      that.diagnostic.permission.ACCESS_COURSE_LOCATION
+      that.diagnostic.permission.ACCESS_COARSE_LOCATION
     ]).then(success).catch(error)
   }
 
@@ -119,8 +119,8 @@ export class BookRidePage {
     element.innerHTML = '';
     this.map = undefined;
     this.map = this.googleMaps.create(element);
-    let ccrLoc: latLng = new LatLng(lat, lon);
-    let position: CameraPosition = {
+    let ccrLoc: LatLng = new LatLng(lat, lon);
+    let position: CameraPosition<any> = {
       target: ccrLoc,
       zoom: 18,
       tilt: 30
@@ -142,12 +142,12 @@ export class BookRidePage {
           }
         })
       };
+      this.map.addMarker(markerOptions)
+        .then((marker: Marker) => {
+          marker.showInfoWindow();
+        });
+      this.uberApi.hideLoader();
     });
-    this.map.addMarker(markerOptions)
-      .then((marker: Marker) => {
-        marker.showInfoWindow();
-      });
-    this.uberApi.hideLoader();
   }
 
   private productClick(product) {

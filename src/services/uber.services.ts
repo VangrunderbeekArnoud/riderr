@@ -55,15 +55,17 @@ export class UberAPI {
     });
   }
 
+  // https://login.uber.com/oauth/v2/authorize?client_id=bK56q3MBUH-vu7me2H_IH0KVZD1X0LIt&response_type=code&scope=profile history places request&redirect_uri=http://localhost/callback
+  // https://login.uber.com/oauth/v2/authorize?client_id=bK56q3MBUH-vu7me2H_IH0KVZD1X0LIt&response_type=code&scope=profile history places request&redirect_uri=http://localhost/callback
+
   auth(): Observable<boolean> {
     return new Observable<boolean>((observer) => {
       this.storage.ready().then(() => {
+        let loginurl: string = `https://login.uber.com/oauth/v2/authorize?client_id=${this.client_id}&response_type=code&scope=${this.scopes}&redirect_uri=${this.redirect_uri}`;
+        console.log(loginurl);
         let browser = this.inAppBrowser.create(
-          `https://login.uber.com/oauth/v2/authorize?
-          client_id=${this.client_id}&
-          response_type=code&scope=${this.scopes}&
-          redirect_uri=${this.redirect_uri}`, '_blank',
-          'location=no,clearsessioncache=yes,clearcache=yes');
+          `https://login.uber.com/oauth/v2/authorize?client_id=${this.client_id}&response_type=code&scope=${this.scopes}&redirect_uri=${this.redirect_uri}`,
+          '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
         browser.on('loadstart').subscribe((event) => {
           let url = event.url;
           if(url.indexOf(this.redirect_uri) === 0) {
@@ -80,11 +82,7 @@ export class UberAPI {
               'Content-type': "application/x-www-form-urlencoded"
             });
             let options = new RequestOptions({ headers: headers});
-            let data =
-              `client_secret=${this.client_secret}
-              &client_id=${this.client_id}&grant_type=
-              authorization_code&redirect_uri=
-              ${this.redirect_uri}&code=${parameterMap.code}`;
+            let data = `client_secret=${this.client_secret}&client_id=${this.client_id}&grant_type=authorization_code&redirect_uri=${this.redirect_uri}&code=${parameterMap.code}`;
             return this.http.post('https://login.uber.com/oauth/v2/token', data, options)
               .subscribe((data) => {
                 let respJson: any = data.json();
@@ -100,6 +98,15 @@ export class UberAPI {
   }
 
   getMe(): Observable<Response> {
+    this.showLoader();
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this.http.get(this.UBERSANDBOXAPIURL + 'history', {
+      headers: headers
+    });
+  }
+
+  getHistory(): Observable<Response> {
     this.showLoader();
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
